@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "aboutdialog.h"
 #include <QApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
   connect(ui->actionAbout_Qt, &QAction::triggered, this,
           &QApplication::aboutQt);
+  refresh();
 }
 
 MainWindow::~MainWindow() {
@@ -58,6 +60,6 @@ void MainWindow::refresh() {
 }
 
 void MainWindow::about() {
-  QMessageBox::about(this, "About ViFlash",
-                     "ViFlash v1.0\n\nCopyright 2023 easai");
+  AboutDialog *dlg=new AboutDialog(this);
+  dlg->exec();
 }
