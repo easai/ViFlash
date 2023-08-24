@@ -4,6 +4,11 @@
 #include <QMainWindow>
 #include <QNetworkAccessManager>
 
+#define AUTHOR "easai"
+#define APPNAME "ViFlash"
+#define WINDOW "Window"
+#define GEOMETRY "Geometry"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class ViFlash;
@@ -30,5 +35,7 @@ private:
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
   QByteArray *m_data_buffer;
+  void saveSettings();
+  void loadSettings();
 };
 #endif // MAINWINDOW_H

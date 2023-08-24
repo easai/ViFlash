@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QNetworkReply>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ViFlash),
@@ -18,10 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
   connect(ui->actionAbout_Qt, &QAction::triggered, this,
           &QApplication::aboutQt);
+  loadSettings();
   refresh();
 }
 
 MainWindow::~MainWindow() {
+  saveSettings();
   delete ui;
   delete m_data_buffer;
 }
@@ -62,4 +65,20 @@ void MainWindow::refresh() {
 void MainWindow::about() {
   AboutDialog *dlg=new AboutDialog(this);
   dlg->exec();
+}
+
+void MainWindow::saveSettings()
+{
+  QSettings settings(AUTHOR, APPNAME);
+  settings.beginGroup(WINDOW);
+  settings.setValue(GEOMETRY, saveGeometry());
+  settings.endGroup();
+}
+
+void MainWindow::loadSettings()
+{
+  QSettings settings(AUTHOR, APPNAME);
+  settings.beginGroup(WINDOW);
+  restoreGeometry(settings.value(GEOMETRY).toByteArray());
+  settings.endGroup();
 }
