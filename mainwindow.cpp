@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "aboutdialog.h"
+#include "word.h"
 #include <QApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -42,10 +43,9 @@ void MainWindow::dataReadFinished() {
     for (int i = 0; i < array.size(); i++) {
       QJsonObject object = array.at(i).toObject();
       QVariantMap map = object.toVariantMap();
-      QString vi = map["vi"].toString();
-      ui->label_vi->setText(vi);
-      QString en = map["en"].toString();
-      ui->label_en->setText(en);
+      Word word(nullptr,map);
+      ui->label_vi->setText(word.getVi());
+      ui->label_en->setText(word.getEn());
     }
     m_data_buffer->clear();
   }
