@@ -57,6 +57,8 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="action_Set_API_URL"/>
     <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -83,6 +85,11 @@
   <action name="action_About">
    <property name="text">
     <string>&amp;About ViFlash</string>
+   </property>
+  </action>
+  <action name="action_Set_API_URL">
+   <property name="text">
+    <string>&amp;Set API URL</string>
    </property>
   </action>
  </widget>

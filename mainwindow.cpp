@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "aboutdialog.h"
 #include "word.h"
+#include "endpointdialog.h"
 #include <QApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -12,73 +13,90 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ViFlash),
-      net_manager(new QNetworkAccessManager(this)), net_reply(nullptr),
-      m_data_buffer(new QByteArray) {
-  ui->setupUi(this);
-  connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::refresh);
-  connect(ui->action_Quit, &QAction::triggered, this, &QApplication::quit);
-  connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
-  connect(ui->actionAbout_Qt, &QAction::triggered, this,
-          &QApplication::aboutQt);
-  loadSettings();
-  refresh();
+    net_manager(new QNetworkAccessManager(this)), net_reply(nullptr),
+    m_data_buffer(new QByteArray) {
+    ui->setupUi(this);
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::refresh);
+    connect(ui->action_Quit, &QAction::triggered, this, &QApplication::quit);
+    connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
+    connect(ui->actionAbout_Qt, &QAction::triggered, this,
+            &QApplication::aboutQt);
+    connect(ui->action_Set_API_URL, &QAction::triggered, this, &MainWindow::setEndpoint);
+    loadSettings();
+    refresh();
 }
 
 MainWindow::~MainWindow() {
-  saveSettings();
-  delete ui;
-  delete m_data_buffer;
+    saveSettings();
+    delete ui;
+    delete m_data_buffer;
 }
 
 void MainWindow::dataReadyToRead() {
-  m_data_buffer->append(net_reply->readAll());
+    m_data_buffer->append(net_reply->readAll());
 }
 
 void MainWindow::dataReadFinished() {
-  if (net_reply->error()) {
-    qDebug() << "Error : " << QString(*m_data_buffer);
-  } else {
-    QJsonDocument doc = QJsonDocument::fromJson(*m_data_buffer);
-    QJsonArray array = doc.array();
-    for (int i = 0; i < array.size(); i++) {
-      QJsonObject object = array.at(i).toObject();
-      QVariantMap map = object.toVariantMap();
-      Word word(nullptr,map);
-      ui->label_vi->setText(word.getVi());
-      ui->label_en->setText(word.getEn());
+    if (net_reply->error()) {
+        qDebug() << "Error : " << QString(*m_data_buffer);
+    } else {
+        QJsonDocument doc = QJsonDocument::fromJson(*m_data_buffer);
+        QJsonArray array = doc.array();
+        for (int i = 0; i < array.size(); i++) {
+            QJsonObject object = array.at(i).toObject();
+            QVariantMap map = object.toVariantMap();
+            Word word(nullptr,map);
+            setWord(word);
+        }
+        m_data_buffer->clear();
     }
-    m_data_buffer->clear();
-  }
 }
 
 void MainWindow::refresh() {
-  const QUrl API_ENDPOINT("https://botudien.pythonanywhere.com/api/nrand/1");
-  QNetworkRequest request;
-  request.setUrl(API_ENDPOINT);
+    const QUrl API_ENDPOINT(m_endpoint);
+    QNetworkRequest request;
+    request.setUrl(API_ENDPOINT);
 
-  net_reply = net_manager->get(request);
-  connect(net_reply, &QIODevice::readyRead, this, &MainWindow::dataReadyToRead);
-  connect(net_reply, &QNetworkReply::finished, this,
-          &MainWindow::dataReadFinished);
+    net_reply = net_manager->get(request);
+    connect(net_reply, &QIODevice::readyRead, this, &MainWindow::dataReadyToRead);
+    connect(net_reply, &QNetworkReply::finished, this,
+            &MainWindow::dataReadFinished);
 }
 
 void MainWindow::about() {
-  AboutDialog *dlg=new AboutDialog(this);
-  dlg->exec();
+    AboutDialog *dlg=new AboutDialog(this);
+    dlg->exec();
+}
+
+void MainWindow::setEndpoint()
+{
+    EndpointDialog *dlg=new EndpointDialog(this, m_endpoint);
+    auto res=dlg->exec();
+    if(res==QDialog::Accepted){
+        m_endpoint=dlg->endpoint();
+    }
 }
 
 void MainWindow::saveSettings()
 {
-  QSettings settings(AUTHOR, APPNAME);
-  settings.beginGroup(WINDOW);
-  settings.setValue(GEOMETRY, saveGeometry());
-  settings.endGroup();
+    QSettings settings(AUTHOR,APPNAME);
+    settings.beginGroup(WINDOW);
+    settings.setValue(GEOMETRY, saveGeometry());
+    settings.setValue(APIURL, m_endpoint);
+    settings.endGroup();
 }
 
 void MainWindow::loadSettings()
 {
-  QSettings settings(AUTHOR, APPNAME);
-  settings.beginGroup(WINDOW);
-  restoreGeometry(settings.value(GEOMETRY).toByteArray());
-  settings.endGroup();
+    QSettings settings(AUTHOR, APPNAME);
+    settings.beginGroup(WINDOW);
+    restoreGeometry(settings.value(GEOMETRY).toByteArray());
+    m_endpoint=settings.value(APIURL,ENDPOINT).toString();
+    settings.endGroup();
+}
+
+void MainWindow::setWord(const Word &word)
+{
+    ui->label_vi->setText(word.getVi());
+    ui->label_en->setText(word.getEn());
 }
