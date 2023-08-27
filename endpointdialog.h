@@ -14,13 +14,11 @@ class EndpointDialog : public QDialog
 public:
     explicit EndpointDialog(QWidget *parent = nullptr, const QString &endpoint="");
     ~EndpointDialog();
-
     QString endpoint() const;
 
 private slots:
-    void on_buttonBox_accepted();
-
-    void on_pushButton_clicked();
+    void saveEndpoint();
+    void resetEndpoint();
 
 private:
     Ui::EndpointDialog *ui;

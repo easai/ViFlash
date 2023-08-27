@@ -9,6 +9,9 @@ EndpointDialog::EndpointDialog(QWidget *parent, const QString &endpoint) :
 {
     ui->setupUi(this);
     ui->lineEdit->setText(endpoint);
+
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &EndpointDialog::saveEndpoint);
+    connect(ui->pushButton,  &QPushButton::clicked, this, &EndpointDialog::resetEndpoint);
 }
 
 EndpointDialog::~EndpointDialog()
@@ -17,7 +20,7 @@ EndpointDialog::~EndpointDialog()
 }
 
 
-void EndpointDialog::on_buttonBox_accepted()
+void EndpointDialog::saveEndpoint()
 {
     QString url=ui->lineEdit->text();
     if(!url.isEmpty()){
@@ -33,7 +36,7 @@ QString EndpointDialog::endpoint() const
 }
 
 
-void EndpointDialog::on_pushButton_clicked()
+void EndpointDialog::resetEndpoint()
 {
     m_endpoint=ENDPOINT;
     ui->lineEdit->setText(m_endpoint);
