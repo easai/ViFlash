@@ -8,15 +8,13 @@ class Word : public QObject
 {
     Q_OBJECT
 public:
-    explicit Word(QObject *parent, const QVariantMap &map);
-
-    QString getVi() const;
-
-    QString getEn() const;
+    explicit Word(QObject *parent, const QVariantMap &map, const QString &target_lang, const QString &desc_lang);
+    QString getTarget() const;
+    QString getDesc() const;
 
 private:
-    QString vi;
-    QString en;
+    QString target;
+    QString desc;
 };
 
 #endif // WORD_H

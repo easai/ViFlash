@@ -1,18 +1,18 @@
 #include "word.h"
 
-
-Word::Word(QObject *parent, const QVariantMap &map)
+Word::Word(QObject *parent, const QVariantMap &map, const QString &target_lang, const QString &desc_lang)
 {
-    this->vi = map["vi"].toString();
-    this->en = map["en"].toString();
+    this->target = map[target_lang].toString();
+    this->desc = map[desc_lang].toString();
 }
 
-QString Word::getVi() const
+
+QString Word::getTarget() const
 {
-    return vi;
+    return target;
 }
 
-QString Word::getEn() const
+QString Word::getDesc() const
 {
-    return en;
+    return desc;
 }

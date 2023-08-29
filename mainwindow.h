@@ -10,7 +10,11 @@
 #define WINDOW "Window"
 #define GEOMETRY "Geometry"
 #define APIURL "API"
-#define ENDPOINT "https://botudien.pythonanywhere.com/api/nrand/1"
+#define DEFAULT_ENDPOINT "https://botudien.pythonanywhere.com/api/nrand/1"
+#define TARGET "Target"
+#define DEFAULT_TARGET "vi"
+#define DESC "Description"
+#define DEFAULT_DESC "en"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,7 +29,7 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-public slots:
+  public slots:
   void dataReadyToRead();
   void dataReadFinished();
 
@@ -37,6 +41,8 @@ private slots:
 private:
   Ui::ViFlash *ui;
   QString m_endpoint;
+  QString m_target;
+  QString m_desc;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
   QByteArray *m_data_buffer;
