@@ -102,4 +102,5 @@ void MainWindow::loadSettings() {
 void MainWindow::setWord(const Word &word) {
   ui->label_target->setText(word.getTarget());
   ui->label_desc->setText(word.getDesc());
+  qDebug() << word;
 }
