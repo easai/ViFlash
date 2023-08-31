@@ -46,7 +46,7 @@ void MainWindow::dataReadFinished() {
     for (int i = 0; i < array.size(); i++) {
       QJsonObject object = array.at(i).toObject();
       QVariantMap map = object.toVariantMap();
-      Word word(nullptr, map, m_target, m_desc);
+      Word word(nullptr, map);
       setWord(word);
     }
     m_data_buffer->clear();
@@ -100,7 +100,7 @@ void MainWindow::loadSettings() {
 }
 
 void MainWindow::setWord(const Word &word) {
-  ui->label_target->setText(word.getTarget());
-  ui->label_desc->setText(word.getDesc());
+  ui->label_target->setText(word.getValue(m_target));
+  ui->label_desc->setText(word.getValue(m_desc));
   qDebug() << word;
 }

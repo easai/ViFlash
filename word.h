@@ -9,15 +9,12 @@ using namespace std;
 class Word : public QObject {
   Q_OBJECT
 public:
-  explicit Word(QObject *parent, const QVariantMap &map,
-                const QString &target_lang, const QString &desc_lang);
-  QString getTarget() const;
-  QString getDesc() const;
+  explicit Word(QObject *parent, const QVariantMap &map);
+  QString getValue(const QString &key) const;
   operator QString() const;
 
 private:
-  QString target;
-  QString desc;
+  QVariantMap m_dat;
 };
 
 #endif // WORD_H
