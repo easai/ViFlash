@@ -33,6 +33,7 @@ public:
   public slots:
   void dataReadyToRead();
   void dataReadFinished();
+  void copyWord();
 
 private slots:
   void refresh();

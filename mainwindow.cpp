@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QClipboard>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ViFlash),
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::refresh);
   connect(ui->action_Quit, &QAction::triggered, this, &QApplication::quit);
+  connect(ui->action_Copy, &QAction::triggered, this, &MainWindow::copyWord);
   connect(ui->action_About, &QAction::triggered, this, &MainWindow::about);
   connect(ui->actionAbout_Qt, &QAction::triggered, this,
           &QApplication::aboutQt);
@@ -51,6 +53,16 @@ void MainWindow::dataReadFinished() {
     }
     m_data_buffer->clear();
   }
+}
+
+void MainWindow::copyWord()
+{
+  QClipboard *clipboard = QGuiApplication::clipboard();
+  QString word="";
+  word+=ui->label_target->text();
+  word+=": ";
+  word+=ui->label_desc->text();
+  clipboard->setText(word);
 }
 
 void MainWindow::refresh() {
