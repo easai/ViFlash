@@ -1,10 +1,10 @@
-#ifndef ENDPOINTDIALOG_H
-#define ENDPOINTDIALOG_H
+#ifndef SETTINGSDIALOG_H
+#define SETTINGSDIALOG_H
 
 #include <QDialog>
 
 namespace Ui {
-class EndpointDialog;
+class SettingsDialog;
 }
 
 class EndpointDialog : public QDialog
@@ -23,10 +23,10 @@ private slots:
     void resetEndpoint();
 
 private:
-    Ui::EndpointDialog *ui;
+    Ui::SettingsDialog *ui;
     QString m_endpoint;
     QString m_target;
     QString m_desc;
 };
 
-#endif // ENDPOINTDIALOG_H
+#endif // SETTINGSDIALOG_H

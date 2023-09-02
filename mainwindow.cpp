@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "aboutdialog.h"
-#include "endpointdialog.h"
+#include "configdialog.h"
 #include "word.h"
 #include <QApplication>
 #include <QJsonArray>
@@ -82,7 +82,7 @@ void MainWindow::about() {
 }
 
 void MainWindow::setEndpoint() {
-  EndpointDialog *dlg = new EndpointDialog(this, m_endpoint, m_target, m_desc);
+  ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc);
   auto res = dlg->exec();
   if (res == QDialog::Accepted) {
     m_endpoint = dlg->endpoint();

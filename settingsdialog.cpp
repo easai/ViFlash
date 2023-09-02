@@ -1,10 +1,10 @@
 #include "endpointdialog.h"
 #include "mainwindow.h"
-#include "ui_endpointdialog.h"
+#include "ui_settingsdialog.h"
 
 EndpointDialog::EndpointDialog(QWidget *parent, const QString &endpoint,
                                const QString &target, const QString &desc)
-    : QDialog(parent), ui(new Ui::EndpointDialog), m_endpoint(endpoint) {
+    : QDialog(parent), ui(new Ui::SettingsDialog), m_endpoint(endpoint) {
   ui->setupUi(this);
   ui->lineEdit->setText(endpoint);
   ui->lineEdit_target->setText(target);
