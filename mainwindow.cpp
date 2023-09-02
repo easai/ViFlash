@@ -84,6 +84,8 @@ void MainWindow::saveSettings() {
   settings.beginGroup(WINDOW);
   settings.setValue(GEOMETRY, saveGeometry());
   settings.setValue(APIURL, m_endpoint);
+  settings.endGroup();
+  settings.beginGroup(LANG);
   settings.setValue(TARGET, m_target);
   settings.setValue(DESC, m_desc);
   settings.endGroup();
@@ -94,6 +96,8 @@ void MainWindow::loadSettings() {
   settings.beginGroup(WINDOW);
   restoreGeometry(settings.value(GEOMETRY).toByteArray());
   m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
+  settings.endGroup();
+  settings.beginGroup(LANG);
   m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
   m_desc = settings.value(DESC, DEFAULT_DESC).toString();
   settings.endGroup();

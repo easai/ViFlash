@@ -11,6 +11,7 @@
 #define GEOMETRY "Geometry"
 #define APIURL "API"
 #define DEFAULT_ENDPOINT "https://botudien.pythonanywhere.com/api/nrand/1"
+#define LANG "Lang"
 #define TARGET "Target"
 #define DEFAULT_TARGET "vi"
 #define DESC "Description"
