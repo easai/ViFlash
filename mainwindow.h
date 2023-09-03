@@ -16,6 +16,7 @@
 #define DEFAULT_TARGET "vi"
 #define DESC "Description"
 #define DEFAULT_DESC "en"
+#define FONT "Font"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,18 +39,20 @@ public:
 private slots:
   void refresh();
   void about();
-  void setEndpoint();
+  void setConfig();
 
 private:
   Ui::ViFlash *ui;
   QString m_endpoint;
   QString m_target;
   QString m_desc;
+  QFont m_font;
+  Word m_word;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
   QByteArray *m_data_buffer;
   void saveSettings();
   void loadSettings();
-  void setWord(const Word &word);
+  void setWord();
 };
 #endif // MAINWINDOW_H

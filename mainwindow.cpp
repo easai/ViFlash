@@ -13,7 +13,7 @@
 #include <QClipboard>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::ViFlash),
+    : QMainWindow(parent), ui(new Ui::ViFlash), m_word(this),
       net_manager(new QNetworkAccessManager(this)), net_reply(nullptr),
       m_data_buffer(new QByteArray) {
   ui->setupUi(this);
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionAbout_Qt, &QAction::triggered, this,
           &QApplication::aboutQt);
   connect(ui->action_Set_API_URL, &QAction::triggered, this,
-          &MainWindow::setEndpoint);
+          &MainWindow::setConfig);
   loadSettings();
   refresh();
 }
@@ -48,8 +48,8 @@ void MainWindow::dataReadFinished() {
     for (int i = 0; i < array.size(); i++) {
       QJsonObject object = array.at(i).toObject();
       QVariantMap map = object.toVariantMap();
-      Word word(nullptr, map);
-      setWord(word);
+      m_word.setDat(map);
+      setWord();
     }
     m_data_buffer->clear();
   }
@@ -81,13 +81,15 @@ void MainWindow::about() {
   dlg->exec();
 }
 
-void MainWindow::setEndpoint() {
-  ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc);
+void MainWindow::setConfig() {
+  ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc, m_font);
   auto res = dlg->exec();
   if (res == QDialog::Accepted) {
     m_endpoint = dlg->endpoint();
     m_target = dlg->target();
     m_desc = dlg->desc();
+    m_font=dlg->font();
+    setWord();
   }
 }
 
@@ -96,6 +98,7 @@ void MainWindow::saveSettings() {
   settings.beginGroup(WINDOW);
   settings.setValue(GEOMETRY, saveGeometry());
   settings.setValue(APIURL, m_endpoint);
+  settings.setValue(FONT, m_font.toString());
   settings.endGroup();
   settings.beginGroup(LANG);
   settings.setValue(TARGET, m_target);
@@ -108,6 +111,7 @@ void MainWindow::loadSettings() {
   settings.beginGroup(WINDOW);
   restoreGeometry(settings.value(GEOMETRY).toByteArray());
   m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
+  m_font.fromString(settings.value(FONT).toString());
   settings.endGroup();
   settings.beginGroup(LANG);
   m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
@@ -115,8 +119,9 @@ void MainWindow::loadSettings() {
   settings.endGroup();
 }
 
-void MainWindow::setWord(const Word &word) {
-  ui->label_target->setText(word.getValue(m_target));
-  ui->label_desc->setText(word.getValue(m_desc));
-  qDebug() << word;
+void MainWindow::setWord() {
+  ui->label_target->setText(m_word.getValue(m_target));
+  ui->label_desc->setText(m_word.getValue(m_desc));
+  ui->label_target->setFont(m_font);
+  qDebug() << m_word;
 }
