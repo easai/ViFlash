@@ -129,7 +129,7 @@ void MainWindow::setWord() {
   ui->label_target->setText(m_word.getValue(m_target));
   ui->label_desc->setText(m_word.getValue(m_desc));
   ui->label_target->setFont(m_font);
-  this->setStyleSheet("background-color: " + m_background.name() + ";");
+  this->centralWidget()->setStyleSheet("background-color: " + m_background.name() + ";");
   QPalette palette = ui->label_target->palette();
   palette.setColor(QPalette::WindowText, m_color);
   ui->label_target->setPalette(palette);
