@@ -81,8 +81,8 @@ void MainWindow::about() {
 }
 
 void MainWindow::setConfig() {
-  ConfigDialog *dlg =
-      new ConfigDialog(this, m_endpoint, m_target, m_desc, m_font);
+  ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc,
+                                       m_font, m_color, m_background);
   auto res = dlg->exec();
   if (res == QDialog::Accepted) {
     m_endpoint = dlg->endpoint();
@@ -90,6 +90,7 @@ void MainWindow::setConfig() {
     m_desc = dlg->desc();
     m_font = dlg->font();
     m_color = dlg->color();
+    m_background = dlg->background();
     setWord();
   }
 }
@@ -101,6 +102,7 @@ void MainWindow::saveSettings() {
   settings.setValue(APIURL, m_endpoint);
   settings.setValue(FONT, m_font.toString());
   settings.setValue(COLOR, m_color.name());
+  settings.setValue(BACKGROUND, m_background.name());
   settings.endGroup();
   settings.beginGroup(LANG);
   settings.setValue(TARGET, m_target);
@@ -115,6 +117,7 @@ void MainWindow::loadSettings() {
   m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
   m_font.fromString(settings.value(FONT).toString());
   m_color = QColor::fromString(settings.value(COLOR).toString());
+  m_background = QColor::fromString(settings.value(BACKGROUND).toString());
   settings.endGroup();
   settings.beginGroup(LANG);
   m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
@@ -126,6 +129,7 @@ void MainWindow::setWord() {
   ui->label_target->setText(m_word.getValue(m_target));
   ui->label_desc->setText(m_word.getValue(m_desc));
   ui->label_target->setFont(m_font);
+  this->setStyleSheet("background-color: " + m_background.name() + ";");
   QPalette palette = ui->label_target->palette();
   palette.setColor(QPalette::WindowText, m_color);
   ui->label_target->setPalette(palette);

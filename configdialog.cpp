@@ -1,18 +1,21 @@
 #include "configdialog.h"
 #include "mainwindow.h"
 #include "ui_configdialog.h"
-#include <QFontDialog>
 #include <QColorDialog>
+#include <QFontDialog>
 
 ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
                            const QString &target, const QString &desc,
-                           const QFont &font)
+                           const QFont &font, const QColor &color,
+                           const QColor &background)
     : QDialog(parent), ui(new Ui::ConfigDialog), m_endpoint(endpoint) {
   ui->setupUi(this);
   ui->lineEdit->setText(endpoint);
   ui->lineEdit_target->setText(target);
   ui->lineEdit_desc->setText(desc);
   m_font = font;
+  m_color = color;
+  m_background = background;
 
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this,
           &ConfigDialog::saveEndpoint);
@@ -22,6 +25,8 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
           &ConfigDialog::selectFont);
   connect(ui->colorButton, &QPushButton::clicked, this,
           &ConfigDialog::selectColor);
+  connect(ui->backgroundButton, &QPushButton::clicked, this,
+          &ConfigDialog::selectBackground);
 }
 
 ConfigDialog::~ConfigDialog() { delete ui; }
@@ -55,13 +60,21 @@ void ConfigDialog::selectFont() {
   }
 }
 
-void ConfigDialog::selectColor()
-{
-  QColor color=QColorDialog::getColor(m_color, this, "Choose color");
-  if(color.isValid()){
-    m_color=color;
+void ConfigDialog::selectColor() {
+  QColor color = QColorDialog::getColor(m_color, this, "Choose color");
+  if (color.isValid()) {
+    m_color = color;
   }
 }
+
+void ConfigDialog::selectBackground() {
+  QColor color = QColorDialog::getColor(m_background, this, "Choose color");
+  if (color.isValid()) {
+    m_background = color;
+  }
+}
+
+QColor ConfigDialog::background() const { return m_background; }
 
 QColor ConfigDialog::color() const { return m_color; }
 

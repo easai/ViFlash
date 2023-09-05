@@ -18,6 +18,7 @@
 #define DEFAULT_DESC "en"
 #define FONT "Font"
 #define COLOR "Color"
+#define BACKGROUND "Background"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -49,6 +50,7 @@ private:
   QString m_desc;
   QFont m_font;
   QColor m_color;
+  QColor m_background;
   Word m_word;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
