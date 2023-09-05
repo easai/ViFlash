@@ -4,13 +4,13 @@
 #include "configdialog.h"
 #include "word.h"
 #include <QApplication>
+#include <QClipboard>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QSettings>
-#include <QClipboard>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ViFlash), m_word(this),
@@ -55,13 +55,12 @@ void MainWindow::dataReadFinished() {
   }
 }
 
-void MainWindow::copyWord()
-{
+void MainWindow::copyWord() {
   QClipboard *clipboard = QGuiApplication::clipboard();
-  QString word="";
-  word+=ui->label_target->text();
-  word+=": ";
-  word+=ui->label_desc->text();
+  QString word = "";
+  word += ui->label_target->text();
+  word += ": ";
+  word += ui->label_desc->text();
   clipboard->setText(word);
 }
 
@@ -82,13 +81,15 @@ void MainWindow::about() {
 }
 
 void MainWindow::setConfig() {
-  ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc, m_font);
+  ConfigDialog *dlg =
+      new ConfigDialog(this, m_endpoint, m_target, m_desc, m_font);
   auto res = dlg->exec();
   if (res == QDialog::Accepted) {
     m_endpoint = dlg->endpoint();
     m_target = dlg->target();
     m_desc = dlg->desc();
-    m_font=dlg->font();
+    m_font = dlg->font();
+    m_color = dlg->color();
     setWord();
   }
 }
@@ -99,6 +100,7 @@ void MainWindow::saveSettings() {
   settings.setValue(GEOMETRY, saveGeometry());
   settings.setValue(APIURL, m_endpoint);
   settings.setValue(FONT, m_font.toString());
+  settings.setValue(COLOR, m_color.name());
   settings.endGroup();
   settings.beginGroup(LANG);
   settings.setValue(TARGET, m_target);
@@ -112,6 +114,7 @@ void MainWindow::loadSettings() {
   restoreGeometry(settings.value(GEOMETRY).toByteArray());
   m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
   m_font.fromString(settings.value(FONT).toString());
+  m_color = QColor::fromString(settings.value(COLOR).toString());
   settings.endGroup();
   settings.beginGroup(LANG);
   m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
@@ -123,5 +126,8 @@ void MainWindow::setWord() {
   ui->label_target->setText(m_word.getValue(m_target));
   ui->label_desc->setText(m_word.getValue(m_desc));
   ui->label_target->setFont(m_font);
+  QPalette palette = ui->label_target->palette();
+  palette.setColor(QPalette::WindowText, m_color);
+  ui->label_target->setPalette(palette);
   qDebug() << m_word;
 }

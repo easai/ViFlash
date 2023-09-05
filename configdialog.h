@@ -18,11 +18,13 @@ public:
     QString target() const;
     QString desc() const;
     QFont font() const;
+    QColor color() const;
 
 private slots:
     void saveEndpoint();
     void resetEndpoint();
     void selectFont();
+    void selectColor();
 
 private:
     Ui::ConfigDialog *ui;
@@ -30,6 +32,7 @@ private:
     QString m_target;
     QString m_desc;
     QFont m_font;
+    QColor m_color;
 };
 
 #endif // CONFIGDIALOG_H

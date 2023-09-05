@@ -2,21 +2,26 @@
 #include "mainwindow.h"
 #include "ui_configdialog.h"
 #include <QFontDialog>
+#include <QColorDialog>
 
 ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
-                               const QString &target, const QString &desc, const QFont &font)
+                           const QString &target, const QString &desc,
+                           const QFont &font)
     : QDialog(parent), ui(new Ui::ConfigDialog), m_endpoint(endpoint) {
   ui->setupUi(this);
   ui->lineEdit->setText(endpoint);
   ui->lineEdit_target->setText(target);
   ui->lineEdit_desc->setText(desc);
-  m_font=font;
+  m_font = font;
 
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this,
           &ConfigDialog::saveEndpoint);
   connect(ui->pushButton, &QPushButton::clicked, this,
           &ConfigDialog::resetEndpoint);
-  connect(ui->fontButton, &QPushButton::clicked, this, &ConfigDialog::selectFont);
+  connect(ui->fontButton, &QPushButton::clicked, this,
+          &ConfigDialog::selectFont);
+  connect(ui->colorButton, &QPushButton::clicked, this,
+          &ConfigDialog::selectColor);
 }
 
 ConfigDialog::~ConfigDialog() { delete ui; }
@@ -41,21 +46,26 @@ void ConfigDialog::resetEndpoint() {
   ui->lineEdit_desc->setText(m_desc);
 }
 
-void ConfigDialog::selectFont()
-{
+void ConfigDialog::selectFont() {
   bool ok;
   QFont font = QFontDialog::getFont(&ok, m_font, this);
   if (ok) {
-    m_font=font;
+    m_font = font;
   } else {
-
   }
 }
 
-QFont ConfigDialog::font() const
+void ConfigDialog::selectColor()
 {
-  return m_font;
+  QColor color=QColorDialog::getColor(m_color, this, "Choose color");
+  if(color.isValid()){
+    m_color=color;
+  }
 }
+
+QColor ConfigDialog::color() const { return m_color; }
+
+QFont ConfigDialog::font() const { return m_font; }
 
 QString ConfigDialog::endpoint() const { return m_endpoint; }
 
