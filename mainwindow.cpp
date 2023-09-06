@@ -116,8 +116,8 @@ void MainWindow::loadSettings() {
   restoreGeometry(settings.value(GEOMETRY).toByteArray());
   m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
   m_font.fromString(settings.value(FONT).toString());
-  m_color = QColor::fromString(settings.value(COLOR).toString());
-  m_background = QColor::fromString(settings.value(BACKGROUND).toString());
+  m_color = QColor::fromString(settings.value(COLOR, "#000000").toString());
+  m_background = QColor::fromString(settings.value(BACKGROUND, "#e0e0e0").toString());
   settings.endGroup();
   settings.beginGroup(LANG);
   m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
