@@ -1,8 +1,6 @@
 #include "word.h"
 #include <iostream>
 
-using namespace std;
-
 Word::Word(QObject *parent, const QVariantMap &map) {
     m_dat=map;
 }
