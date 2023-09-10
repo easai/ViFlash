@@ -24,12 +24,15 @@ public:
   QColor color() const;
   QColor background() const;
 
-private slots:
+  QColor button() const;
+
+  private slots:
   void saveEndpoint();
   void resetEndpoint();
   void selectFont();
   void selectColor();
   void selectBackground();
+  void selectButton();
 
 private:
   Ui::ConfigDialog *ui;
@@ -39,6 +42,7 @@ private:
   QFont m_font;
   QColor m_color;
   QColor m_background;
+  QColor m_button;
 };
 
 #endif // CONFIGDIALOG_H

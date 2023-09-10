@@ -91,6 +91,7 @@ void MainWindow::setConfig() {
     m_font = dlg->font();
     m_color = dlg->color();
     m_background = dlg->background();
+    m_button = dlg->button();
     setWord();
   }
 }
@@ -103,6 +104,7 @@ void MainWindow::saveSettings() {
   settings.setValue(FONT, m_font.toString());
   settings.setValue(COLOR, m_color.name());
   settings.setValue(BACKGROUND, m_background.name());
+  settings.setValue(BUTTON, m_button.name());
   settings.endGroup();
   settings.beginGroup(LANG);
   settings.setValue(TARGET, m_target);
@@ -117,7 +119,9 @@ void MainWindow::loadSettings() {
   m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
   m_font.fromString(settings.value(FONT).toString());
   m_color = QColor::fromString(settings.value(COLOR, "#000000").toString());
-  m_background = QColor::fromString(settings.value(BACKGROUND, "#e0e0e0").toString());
+  m_background =
+      QColor::fromString(settings.value(BACKGROUND, "#e0e0e0").toString());
+  m_button = QColor::fromString(settings.value(BUTTON, "#e0e0e0").toString());
   settings.endGroup();
   settings.beginGroup(LANG);
   m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
@@ -129,7 +133,9 @@ void MainWindow::setWord() {
   ui->label_target->setText(m_word.getValue(m_target));
   ui->label_desc->setText(m_word.getValue(m_desc));
   ui->label_target->setFont(m_font);
-  this->centralWidget()->setStyleSheet("background-color: " + m_background.name() + ";");
+  this->centralWidget()->setStyleSheet(
+      "background-color: " + m_background.name() + ";");
+  ui->pushButton->setStyleSheet("background: " + m_button.name() + ";");
   QPalette palette = ui->label_target->palette();
   palette.setColor(QPalette::WindowText, m_color);
   ui->label_target->setPalette(palette);

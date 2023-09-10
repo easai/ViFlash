@@ -19,6 +19,7 @@
 #define FONT "Font"
 #define COLOR "Color"
 #define BACKGROUND "Background"
+#define BUTTON "Button"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -51,6 +52,7 @@ private:
   QFont m_font;
   QColor m_color;
   QColor m_background;
+  QColor m_button;
   Word m_word;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;

@@ -27,6 +27,8 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
           &ConfigDialog::selectColor);
   connect(ui->backgroundButton, &QPushButton::clicked, this,
           &ConfigDialog::selectBackground);
+  connect(ui->buttonButton, &QPushButton::clicked, this,
+          &ConfigDialog::selectButton);
 }
 
 ConfigDialog::~ConfigDialog() { delete ui; }
@@ -73,6 +75,15 @@ void ConfigDialog::selectBackground() {
     m_background = color;
   }
 }
+
+void ConfigDialog::selectButton() {
+  QColor color = QColorDialog::getColor(m_button, this, "Choose color");
+  if (color.isValid()) {
+    m_button = color;
+  }
+}
+
+QColor ConfigDialog::button() const { return m_button; }
 
 QColor ConfigDialog::background() const { return m_background; }
 
