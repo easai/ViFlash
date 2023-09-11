@@ -110,8 +110,9 @@ void MainWindow::loadSettings() {
   settings.beginGroup(WINDOW);
   restoreGeometry(settings.value(GEOMETRY).toByteArray());
   m_config.setEndpoint(settings.value(APIURL, DEFAULT_ENDPOINT).toString());
-  QString font = ui->label_target->font().toString();
-  m_config.font().fromString(settings.value(FONT, font).toString());
+  QFont font = ui->label_target->font();
+  font.fromString(settings.value(FONT, font.toString()).toString());
+  m_config.setFont(font);
   m_config.setColor(
       QColor::fromString(settings.value(COLOR, "#434c6a").toString()));
   m_config.setBackground(
