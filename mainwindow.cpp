@@ -65,7 +65,7 @@ void MainWindow::copyWord() {
 }
 
 void MainWindow::refresh() {
-  const QUrl API_ENDPOINT(m_endpoint);
+  const QUrl API_ENDPOINT(m_config.endpoint());
   QNetworkRequest request;
   request.setUrl(API_ENDPOINT);
 
@@ -81,17 +81,10 @@ void MainWindow::about() {
 }
 
 void MainWindow::setConfig() {
-  ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc,
-                                       m_font, m_color, m_background, m_button);
+  ConfigDialog *dlg = new ConfigDialog(this, m_config);
   auto res = dlg->exec();
   if (res == QDialog::Accepted) {
-    m_endpoint = dlg->endpoint();
-    m_target = dlg->target();
-    m_desc = dlg->desc();
-    m_font = dlg->font();
-    m_color = dlg->color();
-    m_background = dlg->background();
-    m_button = dlg->button();
+    m_config = dlg->config();
     setWord();
   }
 }
@@ -100,15 +93,15 @@ void MainWindow::saveSettings() {
   QSettings settings(AUTHOR, APPNAME);
   settings.beginGroup(WINDOW);
   settings.setValue(GEOMETRY, saveGeometry());
-  settings.setValue(APIURL, m_endpoint);
-  settings.setValue(FONT, m_font.toString());
-  settings.setValue(COLOR, m_color.name());
-  settings.setValue(BACKGROUND, m_background.name());
-  settings.setValue(BUTTON, m_button.name());
+  settings.setValue(APIURL, m_config.endpoint());
+  settings.setValue(FONT, m_config.font().toString());
+  settings.setValue(COLOR, m_config.color().name());
+  settings.setValue(BACKGROUND, m_config.background().name());
+  settings.setValue(BUTTON, m_config.button().name());
   settings.endGroup();
   settings.beginGroup(LANG);
-  settings.setValue(TARGET, m_target);
-  settings.setValue(DESC, m_desc);
+  settings.setValue(TARGET, m_config.target());
+  settings.setValue(DESC, m_config.desc());
   settings.endGroup();
 }
 
@@ -116,28 +109,32 @@ void MainWindow::loadSettings() {
   QSettings settings(AUTHOR, APPNAME);
   settings.beginGroup(WINDOW);
   restoreGeometry(settings.value(GEOMETRY).toByteArray());
-  m_endpoint = settings.value(APIURL, DEFAULT_ENDPOINT).toString();
-  m_font.fromString(settings.value(FONT).toString());
-  m_color = QColor::fromString(settings.value(COLOR, "#000000").toString());
-  m_background =
-      QColor::fromString(settings.value(BACKGROUND, "#e0e0e0").toString());
-  m_button = QColor::fromString(settings.value(BUTTON, "#e0e0e0").toString());
+  m_config.setEndpoint(settings.value(APIURL, DEFAULT_ENDPOINT).toString());
+  QString font = ui->label_target->font().toString();
+  m_config.font().fromString(settings.value(FONT, font).toString());
+  m_config.setColor(
+      QColor::fromString(settings.value(COLOR, "#434c6a").toString()));
+  m_config.setBackground(
+      QColor::fromString(settings.value(BACKGROUND, "#efeee5").toString()));
+  m_config.setButton(
+      QColor::fromString(settings.value(BUTTON, "#a2b4c6").toString()));
   settings.endGroup();
   settings.beginGroup(LANG);
-  m_target = settings.value(TARGET, DEFAULT_TARGET).toString();
-  m_desc = settings.value(DESC, DEFAULT_DESC).toString();
+  m_config.setTarget(settings.value(TARGET, DEFAULT_TARGET).toString());
+  m_config.setDesc(settings.value(DESC, DEFAULT_DESC).toString());
   settings.endGroup();
 }
 
 void MainWindow::setWord() {
-  ui->label_target->setText(m_word.getValue(m_target));
-  ui->label_desc->setText(m_word.getValue(m_desc));
-  ui->label_target->setFont(m_font);
+  ui->label_target->setText(m_word.getValue(m_config.target()));
+  ui->label_desc->setText(m_word.getValue(m_config.desc()));
+  ui->label_target->setFont(m_config.font());
   this->centralWidget()->setStyleSheet(
-      "background-color: " + m_background.name() + ";");
-  ui->pushButton->setStyleSheet("background: " + m_button.name() + ";");
+      "background-color: " + m_config.background().name() + ";");
+  ui->pushButton->setStyleSheet("background: " + m_config.button().name() +
+                                ";");
   QPalette palette = ui->label_target->palette();
-  palette.setColor(QPalette::WindowText, m_color);
+  palette.setColor(QPalette::WindowText, m_config.color());
   ui->label_target->setPalette(palette);
   qDebug() << m_word;
 }

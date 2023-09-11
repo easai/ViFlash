@@ -1,6 +1,7 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
+#include "config.h"
 #include <QDialog>
 
 namespace Ui {
@@ -11,23 +12,12 @@ class ConfigDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit ConfigDialog(QWidget *parent = nullptr, const QString &endpoint = "",
-                        const QString &target = "", const QString &desc = "",
-                        const QFont &font = QFont("Helvetica [Cronyx]", 10),
-                        const QColor &color = Qt::black,
-                        const QColor &background = Qt::lightGray,
-                          const QColor &button = Qt::lightGray);
+  explicit ConfigDialog(QWidget *parent = nullptr,
+                        const Config &m_config = Config());
   ~ConfigDialog();
-  QString endpoint() const;
-  QString target() const;
-  QString desc() const;
-  QFont font() const;
-  QColor color() const;
-  QColor background() const;
+  Config config() const;
 
-  QColor button() const;
-
-  private slots:
+private slots:
   void saveEndpoint();
   void resetEndpoint();
   void selectFont();
@@ -37,13 +27,7 @@ public:
 
 private:
   Ui::ConfigDialog *ui;
-  QString m_endpoint;
-  QString m_target;
-  QString m_desc;
-  QFont m_font;
-  QColor m_color;
-  QColor m_background;
-  QColor m_button;
+  Config m_config;
 };
 
 #endif // CONFIGDIALOG_H

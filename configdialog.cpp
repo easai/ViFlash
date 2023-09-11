@@ -4,19 +4,13 @@
 #include <QColorDialog>
 #include <QFontDialog>
 
-ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
-                           const QString &target, const QString &desc,
-                           const QFont &font, const QColor &color,
-                           const QColor &background, const QColor &button)
-    : QDialog(parent), ui(new Ui::ConfigDialog), m_endpoint(endpoint) {
+ConfigDialog::ConfigDialog(QWidget *parent, const Config &config)
+    : QDialog(parent), ui(new Ui::ConfigDialog), m_config(config) {
   ui->setupUi(this);
-  ui->lineEdit->setText(endpoint);
-  ui->lineEdit_target->setText(target);
-  ui->lineEdit_desc->setText(desc);
-  m_font = font;
-  m_color = color;
-  m_background = background;
-  m_button=button;
+
+  ui->lineEdit->setText(m_config.endpoint());
+  ui->lineEdit_target->setText(m_config.target());
+  ui->lineEdit_desc->setText(m_config.desc());
 
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this,
           &ConfigDialog::saveEndpoint);
@@ -39,61 +33,51 @@ void ConfigDialog::saveEndpoint() {
   QString target = ui->lineEdit_target->text();
   QString desc = ui->lineEdit_desc->text();
   if (!url.isEmpty() && !target.isEmpty() && !desc.isEmpty()) {
-    m_endpoint = url;
-    m_target = target;
-    m_desc = desc;
+    m_config.setEndpoint(url);
+    m_config.setTarget(target);
+    m_config.setDesc(desc);
   }
 }
 
 void ConfigDialog::resetEndpoint() {
-  m_endpoint = DEFAULT_ENDPOINT;
-  ui->lineEdit->setText(m_endpoint);
-  m_target = DEFAULT_TARGET;
-  ui->lineEdit_target->setText(m_target);
-  m_desc = DEFAULT_DESC;
-  ui->lineEdit_desc->setText(m_desc);
+  m_config.setEndpoint(DEFAULT_ENDPOINT);
+  ui->lineEdit->setText(DEFAULT_ENDPOINT);
+  m_config.setTarget(DEFAULT_TARGET);
+  ui->lineEdit_target->setText(DEFAULT_TARGET);
+  m_config.setDesc(DEFAULT_DESC);
+  ui->lineEdit_desc->setText(DEFAULT_DESC);
 }
 
 void ConfigDialog::selectFont() {
   bool ok;
-  QFont font = QFontDialog::getFont(&ok, m_font, this);
+  QFont font = QFontDialog::getFont(&ok, m_config.font(), this);
   if (ok) {
-    m_font = font;
+    m_config.setFont(font);
   } else {
   }
 }
 
 void ConfigDialog::selectColor() {
-  QColor color = QColorDialog::getColor(m_color, this, "Choose color");
+  QColor color = QColorDialog::getColor(m_config.color(), this, "Choose color");
   if (color.isValid()) {
-    m_color = color;
+    m_config.setColor(color);
   }
 }
 
 void ConfigDialog::selectBackground() {
-  QColor color = QColorDialog::getColor(m_background, this, "Choose color");
+  QColor color =
+      QColorDialog::getColor(m_config.background(), this, "Choose color");
   if (color.isValid()) {
-    m_background = color;
+    m_config.setBackground(color);
   }
 }
 
 void ConfigDialog::selectButton() {
-  QColor color = QColorDialog::getColor(m_button, this, "Choose color");
+  QColor color =
+      QColorDialog::getColor(m_config.button(), this, "Choose color");
   if (color.isValid()) {
-    m_button = color;
+    m_config.setButton(color);
   }
 }
 
-QColor ConfigDialog::button() const { return m_button; }
-
-QColor ConfigDialog::background() const { return m_background; }
-
-QColor ConfigDialog::color() const { return m_color; }
-
-QFont ConfigDialog::font() const { return m_font; }
-
-QString ConfigDialog::endpoint() const { return m_endpoint; }
-
-QString ConfigDialog::desc() const { return m_desc; }
-
-QString ConfigDialog::target() const { return m_target; }
+Config ConfigDialog::config() const { return m_config; }

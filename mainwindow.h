@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "config.h"
 #include "word.h"
 #include <QMainWindow>
 #include <QNetworkAccessManager>
@@ -34,7 +35,7 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-  public slots:
+public slots:
   void dataReadyToRead();
   void dataReadFinished();
   void copyWord();
@@ -46,13 +47,7 @@ private slots:
 
 private:
   Ui::ViFlash *ui;
-  QString m_endpoint;
-  QString m_target;
-  QString m_desc;
-  QFont m_font;
-  QColor m_color;
-  QColor m_background;
-  QColor m_button;
+  Config m_config;
   Word m_word;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
