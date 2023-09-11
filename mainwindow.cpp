@@ -13,7 +13,7 @@
 #include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::ViFlash), m_word(this),
+    : QMainWindow(parent), ui(new Ui::ViFlash), m_word(this), m_config(this),
       net_manager(new QNetworkAccessManager(this)), net_reply(nullptr),
       m_data_buffer(new QByteArray) {
   ui->setupUi(this);
