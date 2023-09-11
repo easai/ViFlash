@@ -15,7 +15,8 @@ public:
                         const QString &target = "", const QString &desc = "",
                         const QFont &font = QFont("Helvetica [Cronyx]", 10),
                         const QColor &color = Qt::black,
-                        const QColor &background = Qt::lightGray);
+                        const QColor &background = Qt::lightGray,
+                          const QColor &button = Qt::lightGray);
   ~ConfigDialog();
   QString endpoint() const;
   QString target() const;

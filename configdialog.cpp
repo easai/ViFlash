@@ -7,7 +7,7 @@
 ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
                            const QString &target, const QString &desc,
                            const QFont &font, const QColor &color,
-                           const QColor &background)
+                           const QColor &background, const QColor &button)
     : QDialog(parent), ui(new Ui::ConfigDialog), m_endpoint(endpoint) {
   ui->setupUi(this);
   ui->lineEdit->setText(endpoint);

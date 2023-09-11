@@ -82,7 +82,7 @@ void MainWindow::about() {
 
 void MainWindow::setConfig() {
   ConfigDialog *dlg = new ConfigDialog(this, m_endpoint, m_target, m_desc,
-                                       m_font, m_color, m_background);
+                                       m_font, m_color, m_background, m_button);
   auto res = dlg->exec();
   if (res == QDialog::Accepted) {
     m_endpoint = dlg->endpoint();
