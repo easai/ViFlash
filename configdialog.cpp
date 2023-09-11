@@ -16,6 +16,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const QString &endpoint,
   m_font = font;
   m_color = color;
   m_background = background;
+  m_button=button;
 
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this,
           &ConfigDialog::saveEndpoint);
