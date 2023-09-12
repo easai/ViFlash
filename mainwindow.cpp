@@ -3,6 +3,7 @@
 #include "aboutdialog.h"
 #include "configdialog.h"
 #include "word.h"
+#include "wordlistdialog.h"
 #include <QApplication>
 #include <QClipboard>
 #include <QJsonArray>
@@ -25,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
           &QApplication::aboutQt);
   connect(ui->action_Set_API_URL, &QAction::triggered, this,
           &MainWindow::setConfig);
+  connect(ui->action_Word_List, &QAction::triggered, this,
+          &MainWindow::showWordList);
   loadSettings();
   refresh();
 }
@@ -89,6 +92,12 @@ void MainWindow::setConfig() {
   }
 }
 
+void MainWindow::showWordList()
+{
+  WordListDialog *dlg=new WordListDialog(this, m_wordlist, m_config.target(), m_config.desc());
+  dlg->exec();
+}
+
 void MainWindow::saveSettings() {
   QSettings settings(AUTHOR, APPNAME);
   settings.beginGroup(WINDOW);
@@ -138,4 +147,5 @@ void MainWindow::setWord() {
   palette.setColor(QPalette::WindowText, m_config.color());
   ui->label_target->setPalette(palette);
   qDebug() << m_word;
+  m_wordlist.append(m_word);
 }

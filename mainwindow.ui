@@ -59,6 +59,8 @@
     </property>
     <addaction name="separator"/>
     <addaction name="action_Set_API_URL"/>
+    <addaction name="action_Word_List"/>
+    <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -102,6 +104,11 @@
   <action name="action_Copy">
    <property name="text">
     <string>&amp;Copy</string>
+   </property>
+  </action>
+  <action name="action_Word_List">
+   <property name="text">
+    <string>&amp;Word List</string>
    </property>
   </action>
  </widget>

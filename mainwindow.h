@@ -44,11 +44,13 @@ private slots:
   void refresh();
   void about();
   void setConfig();
+  void showWordList();
 
 private:
   Ui::ViFlash *ui;
   Config m_config;
   Word m_word;
+  QList<Word> m_wordlist;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
   QByteArray *m_data_buffer;
