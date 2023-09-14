@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->action_Word_List, &QAction::triggered, this,
           &MainWindow::showWordList);
   loadSettings();
+  setWindowIcon(QIcon("://images/favicon.ico"));
   refresh();
 }
 
