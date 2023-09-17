@@ -11,7 +11,7 @@ WordListDialog::WordListDialog(QWidget *parent, const QList<Word> &lst, const QS
     header << target << desc;
 
     ui->tableWidget->setColumnCount(header.count());
-        ui->tableWidget->setHorizontalHeaderLabels(header);
+    ui->tableWidget->setHorizontalHeaderLabels(header);
 
     for (int i=0;i<nRows;i++){
         ui->tableWidget->insertRow(i);

@@ -124,11 +124,11 @@ void MainWindow::loadSettings() {
   font.fromString(settings.value(FONT, font.toString()).toString());
   m_config.setFont(font);
   m_config.setColor(
-      QColor::fromString(settings.value(COLOR, "#434c6a").toString()));
+      QColor::fromString(settings.value(COLOR, DEFAULT_COLOR).toString()));
   m_config.setBackground(
-      QColor::fromString(settings.value(BACKGROUND, "#efeee5").toString()));
+      QColor::fromString(settings.value(BACKGROUND, DEFAULT_BACKGROUND).toString()));
   m_config.setButton(
-      QColor::fromString(settings.value(BUTTON, "#a2b4c6").toString()));
+      QColor::fromString(settings.value(BUTTON, DEFAULT_BUTTON).toString()));
   settings.endGroup();
   settings.beginGroup(LANG);
   m_config.setTarget(settings.value(TARGET, DEFAULT_TARGET).toString());

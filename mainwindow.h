@@ -19,8 +19,11 @@
 #define DEFAULT_DESC "en"
 #define FONT "Font"
 #define COLOR "Color"
+#define DEFAULT_COLOR "#434c6a"
 #define BACKGROUND "Background"
+#define DEFAULT_BACKGROUND "#efeee5"
 #define BUTTON "Button"
+#define DEFAULT_BUTTON "#a2b4c6"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
