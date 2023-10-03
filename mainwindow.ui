@@ -69,6 +69,7 @@
     </property>
     <addaction name="actionAbout_Qt"/>
     <addaction name="action_About"/>
+    <addaction name="action_Open_Botudien"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
     <property name="title">
@@ -109,6 +110,11 @@
   <action name="action_Word_List">
    <property name="text">
     <string>&amp;Word List</string>
+   </property>
+  </action>
+  <action name="action_Open_Botudien">
+   <property name="text">
+    <string>&amp;Open Botudien</string>
    </property>
   </action>
  </widget>

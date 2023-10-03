@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ViFlash), m_word(this), m_config(this),
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::setConfig);
   connect(ui->action_Word_List, &QAction::triggered, this,
           &MainWindow::showWordList);
+  connect(ui->action_Open_Botudien, &QAction::triggered, this, &MainWindow::openBotudien);
   loadSettings();
   setWindowIcon(QIcon("://images/favicon.ico"));
   refresh();
@@ -97,6 +99,12 @@ void MainWindow::showWordList()
 {
   WordListDialog *dlg=new WordListDialog(this, m_wordlist, m_config.target(), m_config.desc());
   dlg->exec();
+}
+
+void MainWindow::openBotudien()
+{
+  const QUrl botudien("https://botudien.pythonanywhere.com/");
+  QDesktopServices::openUrl(botudien);
 }
 
 void MainWindow::saveSettings() {

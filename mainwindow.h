@@ -48,6 +48,7 @@ private slots:
   void about();
   void setConfig();
   void showWordList();
+  void openBotudien();
 
 private:
   Ui::ViFlash *ui;
