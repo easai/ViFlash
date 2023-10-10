@@ -41,6 +41,6 @@ void WordListDialog::saveWordList() {
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
         return;
     QTextStream out(&file);
-    out << m_wordlist.format(m_target, m_desc) << "\n";
+    out << m_wordlist.format(m_target, m_desc) << "\n\n";
     file.close();
 }
