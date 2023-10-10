@@ -1,8 +1,9 @@
 #include "wordlistdialog.h"
 #include "ui_wordlistdialog.h"
+#include <QFileDialog>
 
-WordListDialog::WordListDialog(QWidget *parent, const QList<Word> &lst, const QString &target, const QString &desc) :
-    QDialog(parent),
+WordListDialog::WordListDialog(QWidget *parent, const WordList &lst, const QString &target, const QString &desc) :
+    QDialog(parent), m_wordlist(lst), m_target(target), m_desc(desc),
     ui(new Ui::WordListDialog)
 {
     ui->setupUi(this);
@@ -23,9 +24,23 @@ WordListDialog::WordListDialog(QWidget *parent, const QList<Word> &lst, const QS
         QTableWidgetItem *descItem=new QTableWidgetItem(descWord);
         ui->tableWidget->setItem(i, 1, descItem);
     }
+    connect(ui->button_save, &QPushButton::clicked, this, &WordListDialog::saveWordList);
 }
 
 WordListDialog::~WordListDialog()
 {
     delete ui;
+}
+
+
+void WordListDialog::saveWordList() {
+    QString fn = QFileDialog::getSaveFileName(this, "Save as");
+    if (fn.isEmpty())
+        return;
+    QFile file(fn);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+        return;
+    QTextStream out(&file);
+    out << m_wordlist.format(m_target, m_desc) << "\n";
+    file.close();
 }

@@ -1,43 +1,31 @@
 #include "word.h"
 #include <iostream>
 
-Word::Word(QObject *parent, const QVariantMap &map) {
-    m_dat=map;
+Word::Word(QObject *parent, const QVariantMap &map) { m_dat = map; }
+
+Word::Word(QObject *parent) {}
+
+QString Word::getValue(const QString &key) const {
+  return m_dat[key].toString();
 }
 
-Word::Word(QObject *parent)
-{
+Word::operator QString() const {
+  QString res = "";
+  QList<QString> keys = m_dat.keys();
+  for (int i = 0; i < keys.size(); i++) {
+    QString key = keys[i];
+    res += "[" + key + "]" + m_dat[key].toString() + " ";
+  }
+  return res;
 }
 
-QString Word::getValue(const QString &key) const { return m_dat[key].toString(); }
+Word::Word(const Word &other) : m_dat(other.m_dat) {}
 
-Word::operator QString() const
-{
-    QString res="";
-    QList<QString> keys=m_dat.keys();
-    for(int i=0;i<keys.size();i++)
-    {
-        QString key=keys[i];
-        res+="["+key+"]"+m_dat[key].toString()+" ";
-    }
-    return res;
+Word &Word::operator=(const Word &other) {
+  if (this != &other) {
+    m_dat = other.m_dat;
+  }
+  return *this;
 }
 
-Word::Word(const Word &other)
-    :m_dat(other.m_dat)
-{
-
-}
-
-Word &Word::operator=(const Word &other)
-{
-    if (this != &other) {
-        m_dat=other.m_dat;
-    }
-    return *this;
-}
-
-void Word::setDat(const QVariantMap &newDat)
-{
-    m_dat = newDat;
-}
+void Word::setDat(const QVariantMap &newDat) { m_dat = newDat; }

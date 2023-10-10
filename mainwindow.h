@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "word.h"
+#include "wordlist.h"
 #include <QMainWindow>
 #include <QNetworkAccessManager>
 
@@ -54,7 +55,7 @@ private:
   Ui::ViFlash *ui;
   Config m_config;
   Word m_word;
-  QList<Word> m_wordlist;
+  WordList m_wordlist;
   QNetworkAccessManager *net_manager;
   QNetworkReply *net_reply;
   QByteArray *m_data_buffer;

@@ -30,6 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         config.h config.cpp
         wordlistdialog.h wordlistdialog.cpp wordlistdialog.ui
         icon.rc
+        wordlist.h wordlist.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

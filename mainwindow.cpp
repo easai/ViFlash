@@ -6,13 +6,13 @@
 #include "wordlistdialog.h"
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QSettings>
-#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ViFlash), m_word(this), m_config(this),
@@ -29,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::setConfig);
   connect(ui->action_Word_List, &QAction::triggered, this,
           &MainWindow::showWordList);
-  connect(ui->action_Open_Botudien, &QAction::triggered, this, &MainWindow::openBotudien);
+  connect(ui->action_Open_Botudien, &QAction::triggered, this,
+          &MainWindow::openBotudien);
   loadSettings();
   setWindowIcon(QIcon("://images/favicon.ico"));
   refresh();
@@ -95,17 +96,17 @@ void MainWindow::setConfig() {
   }
 }
 
-void MainWindow::showWordList()
-{
-  WordListDialog *dlg=new WordListDialog(this, m_wordlist, m_config.target(), m_config.desc());
+void MainWindow::showWordList() {
+  WordListDialog *dlg =
+      new WordListDialog(this, m_wordlist, m_config.target(), m_config.desc());
   dlg->exec();
 }
 
-void MainWindow::openBotudien()
-{
+void MainWindow::openBotudien() {
   const QUrl botudien("https://botudien.pythonanywhere.com/");
   QDesktopServices::openUrl(botudien);
 }
+
 
 void MainWindow::saveSettings() {
   QSettings settings(AUTHOR, APPNAME);
@@ -133,8 +134,8 @@ void MainWindow::loadSettings() {
   m_config.setFont(font);
   m_config.setColor(
       QColor::fromString(settings.value(COLOR, DEFAULT_COLOR).toString()));
-  m_config.setBackground(
-      QColor::fromString(settings.value(BACKGROUND, DEFAULT_BACKGROUND).toString()));
+  m_config.setBackground(QColor::fromString(
+      settings.value(BACKGROUND, DEFAULT_BACKGROUND).toString()));
   m_config.setButton(
       QColor::fromString(settings.value(BUTTON, DEFAULT_BUTTON).toString()));
   settings.endGroup();
