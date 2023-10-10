@@ -23,7 +23,7 @@ QString WordList::format(const QString target, const QString desc)
     int nRows=this->count();
     for(int i=0;i<nRows;i++){
         Word word=this->at(i);
-        res += word.getValue(target)+": "+word.getValue(desc);
+        res += word.getValue(target)+": "+word.getValue(desc)+"\n";
     }
     return res;
 }
